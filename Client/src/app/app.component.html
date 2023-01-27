@@ -1,0 +1,23 @@
+<header class="main-header">
+  <!-- nav -->
+  <nav
+    class="main-header__nav navbar navbar-expand-md navbar-dark fixed-top bg-dark"
+  >
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Postman API day - Srilanka 2023</a>
+    </div>
+  </nav>
+</header>
+<!-- main -->
+<main class="main">
+  <div class="container" #top>
+    <router-outlet></router-outlet>
+  </div>
+</main>
+<!-- footer -->
+<footer class="main-footer container">
+  <p class="float-end">
+    <button class="btn btn-light" (click)="scrollTop(top)">Back to top</button>
+  </p>
+  <p>2023</p>
+</footer>

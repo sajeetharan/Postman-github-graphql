@@ -1,0 +1,146 @@
+{
+	"info": {
+		"_postman_id": "daad47f0-94b7-4e9a-9981-ce5d6ee0a4bc",
+		"name": "GitHub GraphQL API",
+		"description": "This is a Postman collection of GitHub GraphQL API v4.0 .\r\n\r\nGitHub GraphQL API Documentation - https://developer.github.com/v4/\r\n\r\nGitHub GraphQL API EXplorer-  https://developer.github.com/v4/explorer/ .\r\nThis is useful in constructing the api request in postman\r\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetUserDetails",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "522daa15-89c9-47c7-b528-f35ae343aa1c",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "{ \r\n viewer\r\n {\r\n     login\r\n     name\r\n     bio\r\n     url\r\n     location\r\n }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{baseURI}}/graphql",
+					"host": [
+						"{{baseURI}}"
+					],
+					"path": [
+						"graphql"
+					]
+				},
+				"description": "Github GraphQL API to get user info"
+			},
+			"response": []
+		},
+		{
+			"name": "GetFollowers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7dbd667c-ba2b-4ea2-8341-434699017880",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "{\r\n  viewer {\r\n    login\r\n    followers(first: 10) {\r\n      nodes {\r\n        login\r\n        name\r\n      }\r\n    }\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{baseURI}}/graphql",
+					"host": [
+						"{{baseURI}}"
+					],
+					"path": [
+						"graphql"
+					]
+				},
+				"description": "Github GraphQL API to get user info"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auth_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "098e0f97-a119-410e-9c94-1bfa3ec70c19",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "b34be273-d2ad-4033-947f-c9d2185bf072",
+				"type": "text/javascript",
+				"exec": [
+					"//Collection level testcases  for common response parameters across all the request ",
+					"pm.test(\"verify that status code is 200\", function () {",
+					"    pm.response.to.have.status(200);",
+					"});",
+					"pm.test(\"Verify that content-type is application/json\", function () {",
+					"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");",
+					"});",
+					"pm.test(\"Verify that the server name is Github\", function () {",
+					"    pm.response.to.have.header(\"Server\", \"GitHub.com\");",
+					"});",
+					"pm.test(\"Verify that the status header is 200 OK\", function () {",
+					"    pm.response.to.have.header(\"Status\", \"200 OK\");",
+					"});",
+					"pm.test(\"Verify that the cache-control header is no-cache\", function () {",
+					"    pm.response.to.have.header(\"Cache-Control\", \"no-cache\");",
+					"});",
+					"pm.test(\"Verify that the X-GitHub-Media-Type header is github.v4; format=json\", function () {",
+					"    pm.response.to.have.header(\"X-GitHub-Media-Type\", \"github.v4; format=json\");",
+					"});",
+					"pm.test(\"Verify tha response body should contains data json object\", function () {",
+					"    pm.expect(pm.response.text()).to.include(\"data\");",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "a2cdea7c-e22d-4e8a-bfaf-7315ffc8c65b",
+			"key": "baseURI",
+			"value": "https://api.github.com",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

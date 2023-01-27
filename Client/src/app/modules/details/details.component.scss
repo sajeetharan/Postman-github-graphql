@@ -1,0 +1,26 @@
+@use '../../../mixins.scss'as mixins;
+
+:host {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+
+
+  @include mixins.atMedium {
+    padding: 2rem;
+  }
+
+  @include mixins.atLarge {
+    padding: 3rem;
+  }
+
+}
+
+.card {
+  width: 100%;
+
+  @include mixins.atLarge {
+    width: 40rem;
+  }
+}

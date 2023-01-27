@@ -1,0 +1,21 @@
+:host {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column
+}
+
+.main-header {
+  &__nav {
+    height: 5rem;
+  }
+}
+
+.main {
+  margin-top: 5rem;
+  flex: 1 0 auto;
+}
+
+.main-footer {
+  height: 5rem;
+}

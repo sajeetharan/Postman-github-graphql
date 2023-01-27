@@ -1,0 +1,24 @@
+<div *ngIf="repo" class="card">
+  <div class="card-header">
+    <h2 class="text-center">
+      <i class="bi bi-github"></i>
+    </h2>
+    <h3 class="card-name text-center">
+      {{ repo.node.name }}
+    </h3>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title text-center">
+      {{ repo.node.nameWithOwner }}
+    </h5>
+    <p>{{ repo.node.description }}</p>
+    <div class="card-buttons float-end">
+      <a
+        [href]="repo.node.url"
+        target="_blank"
+        class="btn btn-outline-primary m-1"
+        ><i class="bi bi-link-45deg"></i
+      ></a>
+    </div>
+  </div>
+</div>

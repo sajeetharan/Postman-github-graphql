@@ -1,0 +1,199 @@
+{
+	"info": {
+		"_postman_id": "c4edceaf-a00d-4feb-993c-3d481af9042d",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Dependency JSON data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `",
+							"    <table bgcolor=\"#FFFFFF\">",
+							"        <tr>",
+							"            <th>Manifest</th>",
+							"            <th>Package</th>",
+							"            <th>Requirement</th>",
+							"            <th>licenseInfo</th>",
+							"        </tr>",
+							"",
+							"        {{#each response.data.repository.dependencyGraphManifests.edges}}",
+							"        {{#each this.node.dependencies.edges}}",
+							"            <tr>",
+							"                <td>{{../node.filename}}</td>",
+							"                <td>{{node.packageName}}</td>",
+							"                <td>{{node.requirements}}</td>",
+							"                <td>{{node.repository.licenseInfo.name}}</td>",
+							"            </tr>",
+							"        {{/each}}",
+							"        {{/each}}",
+							"    </table>",
+							"`;",
+							"",
+							"// Set visualizer",
+							"pm.visualizer.set(template, {",
+							"    // Pass the response body parsed as JSON as `data`",
+							"    response: pm.response.json()",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/vnd.github.hawkgirl-preview+json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "{\n    repository(owner: \"amitgupta7\", name: \"WebGoat\") {\n        name\n        licenseInfo {\n            name\n        }\n        dependencyGraphManifests {\n            totalCount\n            edges {\n                node {\n                    filename\n                    dependencies {\n                        edges {\n                            node {\n                                packageName\n                                packageManager\n                                requirements\n                                repository {\n                                    licenseInfo {\n                                        name\n                                    }\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        }\n    }\n}\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api.github.com/graphql",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"graphql"
+					]
+				},
+				"description": "dependency information in tabular format"
+			},
+			"response": []
+		},
+		{
+			"name": "report scanning alerts for a repository",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `",
+							"    <table bgcolor=\"#FFFFFF\">",
+							"        <tr>",
+							"            <th>URL</th>",
+							"            <th>State</th>",
+							"            <th>Rule</th>",
+							"            <th>Tags</th>",
+							"            <th>Creation date</th>",
+							"            <th>Fixed date</th>",
+							"        </tr>",
+							"",
+							"        {{#each response}}",
+							"            <tr>",
+							"                <td>{{html_url}}</td>",
+							"                <td>{{state}}</td>",
+							"                <td>{{rule.name}}</td>",
+							"                <td>{{#each rule.tags }}<li>{{this}}</li>{{/each}}</td>",
+							"                <td>{{created_at}}</td>",
+							"                <td>{{fixed_at}}</td>",
+							"            </tr>",
+							"        {{/each}}",
+							"    </table>",
+							"`;",
+							"",
+							"// Set visualizer",
+							"pm.visualizer.set(template, {",
+							"    // Pass the response body parsed as JSON as `data`",
+							"    response: pm.response.json()",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.github.com/repos/amitgupta7/WebGoat/code-scanning/alerts",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"amitgupta7",
+						"WebGoat",
+						"code-scanning",
+						"alerts"
+					],
+					"query": [
+						{
+							"key": "state",
+							"value": "open",
+							"description": "Set to `closed` to list only closed code scanning alerts.",
+							"disabled": true
+						},
+						{
+							"key": "ref",
+							"value": "<string>",
+							"description": "Returns a list of code scanning alerts for a specific brach reference. The `ref` must be formatted as `heads/<branch name>`.",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{api_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api_token",
+			"value": "ghp_TOKEN_HERE"
+		}
+	]
+}

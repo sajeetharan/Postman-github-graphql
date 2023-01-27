@@ -1,0 +1,79 @@
+<h1 class="d-flex justify-content-center pt-3">{{ title }}</h1>
+<!-- search form -->
+<div class="row p-4 d-flex justify-content-center">
+  <div class="col-lg-8 col-md-9 col-sm-12 col-xs-12">
+    <form [formGroup]="searchForm" class="search-form d-flex">
+      <input
+        formControlName="search"
+        class="search-form__input form-control me-2"
+        type="search"
+        placeholder="Repository name"
+        aria-label="Search"
+      />
+
+      <button
+        (click)="onSearch()"
+        class="btn btn-outline-success"
+        type="submit"
+      >
+        Search
+      </button>
+      <div>
+        <small *ngIf="search.errors?.minlength" class="text-danger">
+          too short
+        </small>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- repositories cards -->
+<div class="card-container" #cardContainer>
+  <div
+    *ngIf="list && list.length > 0; then cardsBlock; else noItemsBlock"
+  ></div>
+</div>
+<ng-template #cardsBlock>
+  <div
+    *ngFor="let repo of list; let i = index"
+    class="card-container__card card"
+  >
+    <div class="card-header">
+      <h2 class="d-flex justify-content-center">
+        <i class="bi bi-github"></i>
+      </h2>
+      <h3 class="card-name text-center">{{ repo.node.name }}</h3>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title text-center" [title]="repo.node.nameWithOwner">
+        {{ repo.node.nameWithOwner }}
+      </h5>
+      <div class="card-buttons float-end">
+        <a
+          [href]="repo.node.url"
+          target="_blank"
+          class="btn btn-outline-primary m-1"
+          ><i class="bi bi-link-45deg"></i
+        ></a>
+        <a
+          [routerLink]="['/details', repo.node.id]"
+          class="btn btn-outline-secondary m-1"
+          ><i class="bi bi-info-circle"></i
+        ></a>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #noItemsBlock>
+  <h2 class="text-center">No items</h2>
+</ng-template>
+
+<div class="d-flex justify-content-center m-5">
+  <button
+    (click)="loadMore()"
+    type="button"
+    class="btn btn-outline-success btn-lg w-10"
+  >
+    Load more
+  </button>
+</div>
